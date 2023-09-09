@@ -3,11 +3,13 @@ local M = {}
 function ObsidianMoveFile()
   local current_buf = vim.api.nvim_get_current_buf()
   local full_path = vim.api.nvim_buf_get_name(current_buf)
+  --TODO: make this a config option
   local directory_path = "/home/austin/Zettelkasten-v2"
   local files = vim.fn.readdir(directory_path)
 
   local options = { }
   for _, file in ipairs(files) do
+    --TODO: Make this a recursive function to get all subdirectories
     if vim.fn.isdirectory(directory_path .. "/" .. file) == 1 then
       if file:sub(1, 1) ~= "." then
         table.insert(options, file)
