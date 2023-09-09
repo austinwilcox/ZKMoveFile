@@ -1,4 +1,4 @@
-function ObsidianMoveCurrentBuffer()
+local function ObsidianMoveCurrentBuffer()
   local current_buf = vim.api.nvim_get_current_buf()
   local full_path = vim.api.nvim_buf_get_name(current_buf)
   --TODO: make this a config option
