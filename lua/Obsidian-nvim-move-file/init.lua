@@ -3,8 +3,7 @@ local M = {}
 function M.ObsidianMoveCurrentBuffer()
   local current_buf = vim.api.nvim_get_current_buf()
   local full_path = vim.api.nvim_buf_get_name(current_buf)
-  --TODO: make this a config option
-  local directory_path = "/home/austin/Zettelkasten-v2"
+  local directory_path = M.dir
   local files = vim.fn.readdir(directory_path)
 
   local options = { }
@@ -54,7 +53,8 @@ local commands = {
   ObsidianMoveCurrentBuffer = { func = M.ObsidianMoveCurrentBuffer, opts = { nargs = 0} }
 }
 
-function M.setup()
+function M.setup(opts)
+  M.dir = opts.dir
   for command_name, command_config in pairs(commands) do
     local func = function()
       command_config.func()
