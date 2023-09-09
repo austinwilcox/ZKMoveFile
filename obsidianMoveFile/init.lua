@@ -1,6 +1,6 @@
 local M = {}
 
-function ObsidianMoveFile()
+function M.ObsidianMoveCurrentBuffer()
   local current_buf = vim.api.nvim_get_current_buf()
   local full_path = vim.api.nvim_buf_get_name(current_buf)
   --TODO: make this a config option
@@ -48,6 +48,10 @@ function ObsidianMoveFile()
   end
 
   showMenu()
+end
+
+function M.setup()
+  vim.cmd([[command! -nargs=0 ObsidianMoveCurrentBuffer lua ObsidianMoveCurrentBuffer()]])
 end
 
 return M
