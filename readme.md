@@ -16,3 +16,8 @@ I prefer to use neovim for all of my note taking, but I have recently stumbled i
 
 ## Instruction
 Once the package is loaded with lazy, you can now use the command: ObsidianMoveCurrentBuffer. Use this command in command mode when you are editing a file that you want to move to a different location.
+
+## TODO
+1. Recursively load all directories within the obsidian vault - currently only loads surface level folders
+2. Fix output when moving a file to the selected directory
+3. Use Plenary instead of vim.input
