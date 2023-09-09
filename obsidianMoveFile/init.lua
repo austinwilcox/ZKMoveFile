@@ -20,14 +20,41 @@ print(full_path)
 local directory_path = "/home/austin/Zettelkasten-v2"
 local files = vim.fn.readdir(directory_path)
 
+local options = { }
 for _, file in ipairs(files) do
   if vim.fn.isdirectory(directory_path .. "/" .. file) == 1 then
     if file:sub(1, 1) ~= "." then
-      print(file)
+      table.insert(options, file)
     end
   end
 end
 
--- Currently the script will will print the full path of the current file being edited in the buffer, and it will print out all directories that are direct children of the directory_path
--- What I now need to do, is supply the directories to telescope in a popup, and then allow the user to select which directory they want to move the file to
--- After the user has selected the directory, I then want to be able to move the file to that directory
+-- Function to display the menu and get user input
+local function showMenu()
+    print("Select an option:")
+    for i, option in ipairs(options) do
+        print(i .. ". " .. option)
+    end
+
+    while true do
+        local choice = vim.fn.input("Enter the number of your choice: ")
+        choice = tonumber(choice)
+
+        if choice and choice >= 1 and choice <= #options then
+            if choice == #options then
+                print("Exiting...")
+                return
+            else
+                print("You selected: " .. options[choice])
+                -- Perform actions based on the selected option
+                -- Add your code here
+                return
+            end
+        else
+            print("Invalid choice. Please enter a valid option.")
+        end
+    end
+end
+
+-- Call the function to display the menu
+showMenu()
