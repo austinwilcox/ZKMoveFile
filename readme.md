@@ -1,5 +1,5 @@
 # Why?
-I prefer to use neovim for all of my note taking, but I have recently stumbled into obsidian and i've been amazed at how powerful of a note taking application it is so I've started assembling my zettelkasten in it. Then I stumbled onto [Obsidian.nvim](), and realized it had everything I wanted, except for the ability to move files to a separate folder while editing it. The end goal of this repo is that the code here gets merged into the Obsidian.nvim project.
+I prefer to use neovim for all of my note taking, but I have recently stumbled into obsidian and i've been amazed at how powerful of a note taking application it is so I've started assembling my zettelkasten in it. Then I stumbled onto [Obsidian.nvim](https://github.com/epwalsh/obsidian.nvim#notes-on-configuration), and realized it had everything I wanted, except for the ability to move files to a separate folder while editing it. The end goal of this repo is that the code here gets merged into the Obsidian.nvim project.
 
 ## Setup
 ### Lazy
