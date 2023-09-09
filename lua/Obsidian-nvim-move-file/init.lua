@@ -1,4 +1,6 @@
-local function ObsidianMoveCurrentBuffer()
+local M = {}
+
+function M.ObsidianMoveCurrentBuffer()
   local current_buf = vim.api.nvim_get_current_buf()
   local full_path = vim.api.nvim_buf_get_name(current_buf)
   --TODO: make this a config option
@@ -48,13 +50,18 @@ local function ObsidianMoveCurrentBuffer()
   showMenu()
 end
 
-vim.cmd([[command! -nargs=0 ObsidianMoveCurrentBuffer lua require'Obsidian-nvim-move-file'.ObsidianMoveCurrentBuffer()]])
-
-return {
-  ObsidianMoveCurrentBuffer = ObsidianMoveCurrentBuffer
+local commands = {
+  ObsidianMoveCurrentBuffer = { func = M.ObsidianMoveCurrentBuffer, opts = { nargs = 0} }
 }
 
+function M.setup()
+  for command_name, command_config in pairs(commands) do
+    local func = function()
+      command_config.func()
+    end
 
+    vim.api.nvim_create_user_command(command_name, func, command_config.opts)
+  end
+end
 
-
-
+return M
