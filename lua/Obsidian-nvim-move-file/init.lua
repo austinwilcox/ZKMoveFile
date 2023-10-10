@@ -1,6 +1,7 @@
 local popup = require('plenary.popup')
 local move_file_win_id = nil
 local move_file_bufnr = nil
+local options = { }
 
 local M = {}
 
@@ -38,7 +39,6 @@ function M.ObsidianMoveCurrentBuffer()
   local directory_path = M.dir
   local files = vim.fn.readdir(directory_path)
 
-  local options = { }
   for _, file in ipairs(files) do
     --TODO: Make this a recursive function to get all subdirectories
     if vim.fn.isdirectory(directory_path .. "/" .. file) == 1 then
@@ -60,34 +60,43 @@ function M.ObsidianMoveCurrentBuffer()
   vim.api.nvim_buf_set_option(move_file_bufnr, "bufhidden", "delete")
 
   vim.api.nvim_buf_set_keymap(
-      win_info.bufnr,
-      "n",
-      "<CR>",
-      "<Cmd>lua select_menu_item()<CR>",
-      {}
+    win_info.bufnr,
+    "n",
+    "<CR>",
+    "<Cmd>lua Select_menu_item()<CR>",
+    {}
   )
 
-  function select_menu_item()
-    local choice = vim.fn.line(".")
-    local filename = string.match(full_path, "[^/\\]+$")
-    local path_to_place_file = directory_path .. "/" .. options[choice] .. "/" .. filename
-    local success, errorMsg = os.rename(full_path, directory_path .. "/" .. options[choice] .. "/" .. filename)
-    if success then
-      print("File moved successfully, reloading file in new buffer.")
-      vim.api.nvim_command("e " .. path_to_place_file)
-    else
-      print("Error moving file: " .. errorMsg)
-    end
-    close_menu()
+  vim.cmd(
+    string.format(
+      "autocmd BufModifiedSet <buffer=%s> set nomodified",
+      move_file_bufnr
+    )
+  )
+end
+
+function Select_menu_item()
+  local current_buf = vim.api.nvim_get_current_buf()
+  local full_path = vim.api.nvim_buf_get_name(current_buf)
+  local choice = vim.fn.line(".")
+  local directory_path = M.dir
+  local filename = string.match(full_path, "[^/\\]+$")
+  local path_to_place_file = directory_path .. "/" .. options[choice] .. "/" .. filename
+  local success, errorMsg = os.rename(full_path, directory_path .. "/" .. options[choice] .. "/" .. filename)
+  if success then
+    print("File moved successfully, reloading file in new buffer.")
+    vim.api.nvim_command("e " .. path_to_place_file)
+  else
+    print("Error moving file: " .. errorMsg)
   end
+  Close_menu()
+end
 
-  function close_menu()
-    vim.api.nvim_win_close(move_file_win_id, true)
+function Close_menu()
+  vim.api.nvim_win_close(move_file_win_id, true)
 
-    move_file_bufnr = nil
-    move_file_win_id = nil
-  end
-
+  move_file_bufnr = nil
+  move_file_win_id = nil
 end
 
 
