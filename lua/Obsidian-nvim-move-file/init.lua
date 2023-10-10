@@ -81,6 +81,12 @@ function M.ObsidianMoveCurrentBuffer()
     "<Cmd>lua Select_menu_item()<CR>",
     {}
   )
+  vim.cmd(
+    string.format(
+      "autocmd BufModifiedSet <buffer=%s> set nomodified",
+      move_file_bufnr
+    )
+  )
 end
 
 function Select_menu_item()
