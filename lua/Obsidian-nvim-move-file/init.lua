@@ -96,13 +96,13 @@ function Select_menu_item()
   local filename = string.match(full_path, "[^/\\]+$")
   local path_to_place_file = directory_path .. "/" .. options[choice] .. "/" .. filename
   local success, errorMsg = os.rename(full_path, directory_path .. "/" .. options[choice] .. "/" .. filename)
+  Close_menu()
   if success then
     print("File moved successfully, reloading file in new buffer.")
     vim.api.nvim_command("e " .. path_to_place_file)
   else
     print("Error moving file: " .. errorMsg)
   end
-  Close_menu()
 end
 
 function Close_menu()
