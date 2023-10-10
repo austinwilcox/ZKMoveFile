@@ -59,19 +59,27 @@ function M.ObsidianMoveCurrentBuffer()
   vim.api.nvim_buf_set_option(move_file_bufnr, "buftype", "acwrite")
   vim.api.nvim_buf_set_option(move_file_bufnr, "bufhidden", "delete")
 
+
   vim.api.nvim_buf_set_keymap(
-    win_info.bufnr,
+    move_file_bufnr,
+    "n",
+    "q",
+    "<Cmd>lua Close_menu()<CR>",
+    { silent = true }
+  )
+  vim.api.nvim_buf_set_keymap(
+    move_file_bufnr,
+    "n",
+    "<ESC>",
+    "<Cmd>lua Close_menu()<CR>",
+    { silent = true }
+  )
+  vim.api.nvim_buf_set_keymap(
+    move_file_bufnr,
     "n",
     "<CR>",
     "<Cmd>lua Select_menu_item()<CR>",
     {}
-  )
-
-  vim.cmd(
-    string.format(
-      "autocmd BufModifiedSet <buffer=%s> set nomodified",
-      move_file_bufnr
-    )
   )
 end
 
