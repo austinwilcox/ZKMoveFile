@@ -67,7 +67,7 @@ function M.ObsidianMoveCurrentBuffer()
       {}
   )
 
-  local function select_menu_item()
+  function select_menu_item()
     local choice = vim.fn.line(".")
     local filename = string.match(full_path, "[^/\\]+$")
     local path_to_place_file = directory_path .. "/" .. options[choice] .. "/" .. filename
@@ -81,7 +81,7 @@ function M.ObsidianMoveCurrentBuffer()
     close_menu()
   end
 
-  local function close_menu()
+  function close_menu()
     vim.api.nvim_win_close(move_file_win_id, true)
 
     move_file_bufnr = nil
