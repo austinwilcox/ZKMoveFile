@@ -2,6 +2,7 @@ local popup = require('plenary.popup')
 local move_file_win_id = nil
 local move_file_bufnr = nil
 local options = { }
+local current_buf = nil
 
 local M = {}
 
@@ -34,11 +35,10 @@ local function create_window()
 end
 
 function M.ObsidianMoveCurrentBuffer()
-  local current_buf = vim.api.nvim_get_current_buf()
-  local full_path = vim.api.nvim_buf_get_name(current_buf)
+  current_buf = vim.api.nvim_get_current_buf()
+
   local directory_path = M.dir
   local files = vim.fn.readdir(directory_path)
-
   for _, file in ipairs(files) do
     --TODO: Make this a recursive function to get all subdirectories
     if vim.fn.isdirectory(directory_path .. "/" .. file) == 1 then
@@ -76,7 +76,6 @@ function M.ObsidianMoveCurrentBuffer()
 end
 
 function Select_menu_item()
-  local current_buf = vim.api.nvim_get_current_buf()
   local full_path = vim.api.nvim_buf_get_name(current_buf)
   local choice = vim.fn.line(".")
   local directory_path = M.dir
