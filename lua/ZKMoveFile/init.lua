@@ -36,9 +36,9 @@ local function create_window()
     local borderchars =  { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
     local bufnr = vim.api.nvim_create_buf(false, false)
 
-    local obsidian_move_cmd_win_id, win = popup.create(bufnr, {
+    local zk_move_cmd_win_id, win = popup.create(bufnr, {
         title = M.title,
-        highlight = "ObsidianWindow",
+        highlight = "ZKWindow",
         line = math.floor(((vim.o.lines - height) / 2) - 1),
         col = math.floor((vim.o.columns - width) / 2),
         minwidth = width,
@@ -49,16 +49,16 @@ local function create_window()
     vim.api.nvim_win_set_option(
         win.border.win_id,
         "winhl",
-        "Normal:ObsidianBorder"
+        "Normal:ZKBorder"
     )
 
     return {
         bufnr = bufnr,
-        win_id = obsidian_move_cmd_win_id,
+        win_id = zk_move_cmd_win_id,
     }
 end
 
-function M.ObsidianMoveCurrentBuffer()
+function M.ZKMoveCurrentBuffer()
   current_buf = vim.api.nvim_get_current_buf()
 
   traverseFilePath(M.dir, 0)
@@ -68,9 +68,9 @@ function M.ObsidianMoveCurrentBuffer()
   move_file_win_id = win_info.win_id
 
   vim.api.nvim_win_set_option(move_file_win_id, "number", true)
-  vim.api.nvim_buf_set_name(move_file_bufnr, "obsidian-move-file-menu")
+  vim.api.nvim_buf_set_name(move_file_bufnr, "zk-move-file-menu")
   vim.api.nvim_buf_set_lines(move_file_bufnr, 0, #options, false, options)
-  vim.api.nvim_buf_set_option(move_file_bufnr, "filetype", "obsidian-move-file")
+  vim.api.nvim_buf_set_option(move_file_bufnr, "filetype", "zk-move-file")
   vim.api.nvim_buf_set_option(move_file_bufnr, "buftype", "acwrite")
   vim.api.nvim_buf_set_option(move_file_bufnr, "bufhidden", "delete")
 
@@ -129,12 +129,12 @@ end
 
 
 local commands = {
-  ObsidianMoveCurrentBuffer = { func = M.ObsidianMoveCurrentBuffer, opts = { nargs = 0} }
+  ZKMoveCurrentBuffer = { func = M.ZKMoveCurrentBuffer, opts = { nargs = 0} }
 }
 
 function M.setup(opts)
   M.dir = opts.dir
-  M.title = opts.title or "Obsidian Move Current Buffer"
+  M.title = opts.title or "ZK Move Current Buffer"
   M.layers = opts.layers or 0
   for command_name, command_config in pairs(commands) do
     local func = function()
@@ -148,7 +148,7 @@ end
 --TESTING LOCALLY
 --luafile init.lua
 -- M.setup({ dir= "/home/austin/Zettelkasten-v2", title= "Test", layers= 1 })
--- M.ObsidianMoveCurrentBuffer()
+-- M.ZKMoveCurrentBuffer()
 --END TESTING
 
 return M
