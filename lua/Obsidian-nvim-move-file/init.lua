@@ -6,6 +6,32 @@ local current_buf = nil
 
 local M = {}
 
+local function traverseFilePath(path, currentLayer)
+  local files = vim.fn.readdir(path)
+  local _, final = string.find(path, M.dir, 1, true)
+  local parent_path = nil
+  if final ~= nil and path ~= M.dir then
+    parent_path = string.sub(path, final+2)
+  end
+  for _, file in ipairs(files) do
+    if vim.fn.isdirectory(path .. "/" .. file) == 1 then
+      if file:sub(1, 1) ~= "." then
+        if parent_path ~= nil then
+          print(parent_path .. "/" .. file)
+          table.insert(options, parent_path .. "/" .. file)
+        else
+          print(file)
+          table.insert(options, file)
+        end
+
+        if M.layers == -1 or currentLayer < M.layers then
+          traverseFilePath(path .. "/" .. file, currentLayer + 1)
+        end
+      end
+    end
+  end
+end
+
 local function create_window()
     local width =  60
     local height = 10
@@ -13,7 +39,7 @@ local function create_window()
     local bufnr = vim.api.nvim_create_buf(false, false)
 
     local obsidian_move_cmd_win_id, win = popup.create(bufnr, {
-        title = M.title or "Obsidian Move Current Buffer",
+        title = M.title,
         highlight = "ObsidianWindow",
         line = math.floor(((vim.o.lines - height) / 2) - 1),
         col = math.floor((vim.o.columns - width) / 2),
@@ -37,16 +63,7 @@ end
 function M.ObsidianMoveCurrentBuffer()
   current_buf = vim.api.nvim_get_current_buf()
 
-  local directory_path = M.dir
-  local files = vim.fn.readdir(directory_path)
-  for _, file in ipairs(files) do
-    --TODO: Make this a recursive function to get all subdirectories
-    if vim.fn.isdirectory(directory_path .. "/" .. file) == 1 then
-      if file:sub(1, 1) ~= "." then
-        table.insert(options, file)
-      end
-    end
-  end
+  traverseFilePath(M.dir, 0)
 
   local win_info = create_window()
   move_file_bufnr = win_info.bufnr
@@ -119,7 +136,8 @@ local commands = {
 
 function M.setup(opts)
   M.dir = opts.dir
-  M.title = opts.title
+  M.title = opts.title or "Obsidian Move Current Buffer"
+  M.layers = opts.layers or 0
   for command_name, command_config in pairs(commands) do
     local func = function()
       command_config.func()
@@ -128,5 +146,11 @@ function M.setup(opts)
     vim.api.nvim_create_user_command(command_name, func, command_config.opts)
   end
 end
+
+--TESTING LOCALLY
+--luafile init.lua
+-- M.setup({ dir= "/home/austin/Zettelkasten-v2", title= "Test", layers= 1 })
+-- M.ObsidianMoveCurrentBuffer()
+--END TESTING
 
 return M
