@@ -13,7 +13,7 @@ local function create_window()
     local bufnr = vim.api.nvim_create_buf(false, false)
 
     local obsidian_move_cmd_win_id, win = popup.create(bufnr, {
-        title = M.title or "ZK Directories",
+        title = M.title or "Obsidian Move Current Buffer",
         highlight = "ObsidianWindow",
         line = math.floor(((vim.o.lines - height) / 2) - 1),
         col = math.floor((vim.o.columns - width) / 2),
@@ -98,7 +98,7 @@ function Select_menu_item()
   local success, errorMsg = os.rename(full_path, directory_path .. "/" .. options[choice] .. "/" .. filename)
   Close_menu()
   if success then
-    print("File moved successfully, reloading file in new buffer.")
+    print("File moved successfully to " .. options[choice] .. ", reloading file in new buffer.")
     vim.api.nvim_command("e " .. path_to_place_file)
   else
     print("Error moving file: " .. errorMsg)
@@ -119,6 +119,7 @@ local commands = {
 
 function M.setup(opts)
   M.dir = opts.dir
+  M.title = opts.title
   for command_name, command_config in pairs(commands) do
     local func = function()
       command_config.func()
