@@ -17,10 +17,8 @@ local function traverseFilePath(path, currentLayer)
     if vim.fn.isdirectory(path .. "/" .. file) == 1 then
       if file:sub(1, 1) ~= "." then
         if parent_path ~= nil then
-          print(parent_path .. "/" .. file)
           table.insert(options, parent_path .. "/" .. file)
         else
-          print(file)
           table.insert(options, file)
         end
 
