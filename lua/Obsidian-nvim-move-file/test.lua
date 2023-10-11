@@ -12,7 +12,6 @@ local function recursiveFilePath(path, currentLayer)
     parent_path = string.sub(path, final+1)
   end
   for _, file in ipairs(files) do
-    --TODO: Make this a recursive function to get all subdirectories
     if vim.fn.isdirectory(path .. "/" .. file) == 1 then
       if file:sub(1, 1) ~= "." then
         if parent_path ~= nil then
