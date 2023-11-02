@@ -194,8 +194,9 @@ end
 
 --TESTING LOCALLY
 -- run :luafile init.lua
- -- M.setup({ dir= "/home/austin/Zettelkasten-v2", title= "Test", layers= 1, permanent_notes_dir="Permanent Notes" })
- -- M.ZKOpenRandomFile()
+-- M.setup({ dir= "/home/austin/Zettelkasten-v2", title= "Test", layers= 1, permanent_notes_dir="Permanent Notes" })
+-- M.ZKMoveCurrentBuffer()
+-- M.ZKOpenRandomFile()
 --END TESTING
 
 return M
