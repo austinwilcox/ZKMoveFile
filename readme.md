@@ -38,3 +38,4 @@ Once the package is loaded with lazy, you can now use the command ```ZKMoveCurre
 4. - [ ] Add exclude_dirs option in the opts for setup. This will allow users to ignore certain folders for options to move to
 5. - [ ] Change layers to depth, depth makes much more sense when traversing folders.
 6. - [ ] Change name of the permanent notes option.
+7. - [ ] Add option to add hidden folders, I currently have that disabled by default
