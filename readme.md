@@ -35,4 +35,6 @@ Once the package is loaded with lazy, you can now use the command ```ZKMoveCurre
 1. - [x] Recursively load all directories within the ~~obsidian~~Zettelkasten vault - currently only loads surface level folders
 2. - [x] Fix output when moving a file to the selected directory
 3. - [x] Use Plenary instead of vim.input
-4. - [ ] Merge into obsidian.nvim
+4. - [ ] Add exclude_dirs option in the opts for setup. This will allow users to ignore certain folders for options to move to
+5. - [ ] Change layers to depth, depth makes much more sense when traversing folders.
+6. - [ ] Change name of the permanent notes option.
