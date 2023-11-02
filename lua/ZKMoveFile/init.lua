@@ -1,6 +1,7 @@
 local popup = require('plenary.popup')
 local move_file_win_id = nil
 local move_file_bufnr = nil
+---@type table
 local directory_options = {}
 local current_buf = nil
 
@@ -142,7 +143,9 @@ end
 
 --Open a random file found in the M.dir/M.permanent_notes_dir
 function M.ZKOpenRandomFile()
+  ---@type string
   local path = M.dir .. "/" .. M.permanent_notes_dir
+  ---@type table
   local random_files = {}
 
   local files = vim.fn.readdir(path)
